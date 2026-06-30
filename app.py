@@ -1,20 +1,25 @@
-from src.core.gemini import GeminiAssistant
+from src.core.assistant import Assistant
 
-assistant = GeminiAssistant()
+ai = Assistant()
 
 print("=" * 50)
 print("Desktop AI Assistant")
 print("=" * 50)
 
 while True:
+
     question = input("\nAnda : ")
 
-    if question.lower() in ["exit", "quit"]:
+    if question.lower() == "exit":
         print("Sampai jumpa.")
         break
 
     try:
-        answer = assistant.ask(question)
+
+        answer = ai.ask(question)
+
         print("\nAI :", answer)
+
     except Exception as e:
+
         print("\nERROR :", e)
