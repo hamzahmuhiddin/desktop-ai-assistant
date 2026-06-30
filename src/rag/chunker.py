@@ -1,26 +1,27 @@
 class TextChunker:
 
-    def __init__(self,
-                 chunk_size=800,
-                 overlap=100):
-
-        self.chunk_size = chunk_size
-        self.overlap = overlap
-
     def split(self, text):
+
+        paragraphs = text.split("\n\n")
 
         chunks = []
 
-        start = 0
+        current = ""
 
-        while start < len(text):
+        for paragraph in paragraphs:
 
-            end = start + self.chunk_size
+            if len(current) + len(paragraph) < 1200:
 
-            chunk = text[start:end]
+                current += paragraph + "\n\n"
 
-            chunks.append(chunk)
+            else:
 
-            start += self.chunk_size - self.overlap
+                chunks.append(current.strip())
+
+                current = paragraph + "\n\n"
+
+        if current:
+
+            chunks.append(current.strip())
 
         return chunks

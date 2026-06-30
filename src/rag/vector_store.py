@@ -7,12 +7,7 @@ class VectorStore:
 
         self.client = chromadb.PersistentClient(path=db_path)
 
-        try:
-            self.client.delete_collection("documents")
-        except:
-            pass
-
-        self.collection = self.client.create_collection(
+        self.collection = self.client.get_or_create_collection(
             name="documents"
         )
 
@@ -20,17 +15,31 @@ class VectorStore:
 
         ids = [str(i) for i in range(len(chunks))]
 
+        metadatas = []
+
+        for i in range(len(chunks)):
+            metadatas.append(
+                {
+                    "chunk_id": i,
+                    "source": "PROPOSAL TESIS.pdf"
+                }
+            )
+
         self.collection.add(
             ids=ids,
             documents=chunks,
-            embeddings=embeddings.tolist()
+            embeddings=embeddings.tolist(),
+            metadatas=metadatas
         )
 
     def search(self, query_embedding, top_k=5):
 
-        result = self.collection.query(
+        return self.collection.query(
             query_embeddings=[query_embedding.tolist()],
-            n_results=top_k
+            n_results=top_k,
+            include=[
+                "documents",
+                "distances",
+                "metadatas"
+            ]
         )
-
-        return result

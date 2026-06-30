@@ -1,5 +1,5 @@
-from src.rag.search import SemanticSearch
 from src.core.gemini import ask_gemini
+from src.rag.search import SemanticSearch
 
 
 class RAGPipeline:
@@ -9,25 +9,43 @@ class RAGPipeline:
 
     def ask(self, question):
 
-        documents = self.search.search(question)
+        results = self.search.search(question)
 
-        print("\n===== HASIL SEARCH =====\n")
+        documents = results["documents"][0]
+        scores = results["distances"][0]
+        metadatas = results["metadatas"][0]
 
-        for i, doc in enumerate(documents, 1):
-            print(f"\n--- Chunk {i} ---\n")
-            print(doc[:500])
+        print("\n===== HASIL SEARCH =====")
 
-        context = "\n\n".join(documents)
+        context_docs = []
+
+        for i in range(len(documents)):
+
+            print(f"\n--- Chunk {i+1} ---")
+            print("Distance :", scores[i])
+            print("Metadata :", metadatas[i])
+            print(documents[i][:500])
+
+            context_docs.append(documents[i])
+
+        context = "\n\n".join(context_docs)
 
         prompt = f"""
 Jawablah pertanyaan HANYA berdasarkan konteks berikut.
 
-Jika jawabannya tidak ada di konteks, katakan bahwa informasi tidak ditemukan.
+Jika jawabannya tidak ada di konteks,
+katakan "Informasi tidak ditemukan."
 
-KONTEKS:
+====================
+KONTEKS
+====================
+
 {context}
 
-PERTANYAAN:
+====================
+PERTANYAAN
+====================
+
 {question}
 """
 
