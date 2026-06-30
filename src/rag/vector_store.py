@@ -7,7 +7,12 @@ class VectorStore:
 
         self.client = chromadb.PersistentClient(path=db_path)
 
-        self.collection = self.client.get_or_create_collection(
+        try:
+            self.client.delete_collection("documents")
+        except:
+            pass
+
+        self.collection = self.client.create_collection(
             name="documents"
         )
 

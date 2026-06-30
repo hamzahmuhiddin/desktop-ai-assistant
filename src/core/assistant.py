@@ -1,4 +1,4 @@
-from src.core.gemini import ask_gemini
+from src.rag.pipeline import RAGPipeline
 from src.core.memory import ConversationMemory
 
 
@@ -6,15 +6,13 @@ class Assistant:
 
     def __init__(self):
         self.memory = ConversationMemory()
+        self.rag = RAGPipeline()
 
     def ask(self, question):
 
         self.memory.add_user(question)
 
-        answer = ask_gemini(
-            question,
-            history=self.memory.get_history()
-        )
+        answer = self.rag.ask(question)
 
         self.memory.add_ai(answer)
 
