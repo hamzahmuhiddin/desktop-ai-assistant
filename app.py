@@ -8,11 +8,15 @@ print("=" * 50)
 
 while True:
 
-    question = input("\nAnda : ")
+    question = input("\nAnda : ").strip()
 
     if question.lower() == "exit":
         print("Sampai jumpa.")
         break
+
+    if not question:
+        print("\nSilakan masukkan pertanyaan.")
+        continue
 
     try:
 
