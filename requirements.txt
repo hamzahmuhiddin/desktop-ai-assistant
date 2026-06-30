@@ -1,0 +1,17 @@
+# PDF Processing
+pypdf==4.0.1
+python-docx==0.8.11
+
+# Embedding & Vector Database
+sentence-transformers==3.3.1
+chromadb==0.5.23
+
+# LLM API
+google-genai==0.3.0
+groq==0.13.0
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# Utilities
+numpy==1.26.4
