@@ -4,9 +4,18 @@ import chromadb
 class VectorStore:
 
     def __init__(self, db_path="vector_db"):
-
         self.client = chromadb.PersistentClient(path=db_path)
+        self.collection = self.client.get_or_create_collection(
+            name="documents"
+        )
 
+    def reset(self):
+        """
+        Hapus seluruh isi collection.
+        WAJIB dipanggil sebelum rebuild, supaya data lama (basi)
+        tidak menumpuk dan ikut tercampur di hasil pencarian.
+        """
+        self.client.delete_collection(name="documents")
         self.collection = self.client.get_or_create_collection(
             name="documents"
         )

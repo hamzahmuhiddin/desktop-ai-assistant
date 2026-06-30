@@ -103,8 +103,6 @@ class TextCleaner:
         # Pattern: "Page X" standalone
         text = re.sub(r"(?:page|halaman)\s+\d+$", "", text, flags=re.MULTILINE | re.IGNORECASE)
 
-        # Pattern: names di footer (optional - bisa disesuaikan)
-        text = re.sub(r"^Muhammad\s+Hamzah.*$", "", text, flags=re.MULTILINE)
 
         return text
 

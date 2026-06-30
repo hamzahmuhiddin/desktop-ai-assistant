@@ -20,6 +20,9 @@ clean_text = cleaner.clean(text)
 print("Creating chunks...")
 chunks = chunker.split(clean_text)
 
+print("Resetting old vector database...")
+store.reset()
+
 print("Creating embeddings...")
 embeddings = embedder.encode(chunks)
 
