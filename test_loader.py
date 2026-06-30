@@ -1,17 +1,21 @@
 from src.rag.loader import DocumentLoader
 from src.rag.cleaner import TextCleaner
+from src.rag.chunker import TextChunker
 
 loader = DocumentLoader()
 cleaner = TextCleaner()
+chunker = TextChunker()
 
 text = loader.load("docs/PROPOSAL TESIS.pdf")
 
 clean_text = cleaner.clean(text)
 
-with open("hasil_bersih.txt", "w", encoding="utf-8") as f:
-    f.write(clean_text)
+chunks = chunker.split(clean_text)
 
 print("=" * 50)
-print("Jumlah karakter :", len(clean_text))
-print("File hasil_bersih.txt berhasil dibuat.")
+print("Jumlah Chunk :", len(chunks))
 print("=" * 50)
+
+for i, chunk in enumerate(chunks[:3]):
+    print(f"\n===== CHUNK {i+1} =====\n")
+    print(chunk)
